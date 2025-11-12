@@ -36,7 +36,7 @@ public class Product {
 
     @ManyToOne
     @JoinColumn(name="subcategory_id", nullable = false)
-    private subCategory subcategory;
+    private SubCategory subcategory;
 
 
     public String getName(){
