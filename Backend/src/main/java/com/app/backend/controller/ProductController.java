@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Locale.Category;
 
 @RestController
-@RequestMapping("/api/categories")
+@RequestMapping("/api/product")
 @CrossOrigin(origins = "*")
 public class ProductController {
     @Autowired
