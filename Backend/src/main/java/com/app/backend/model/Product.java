@@ -21,7 +21,7 @@ public class Product {
     @Column(length = 1000)
     private String description;
     
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private Double price;
 
     private Integer stock;
@@ -48,6 +48,10 @@ public class Product {
 
     @Transient
     private Long subcategoryId;
+
+    public Long getId(){
+        return id;
+    }
 
     public String getName(){
         return this.name;
@@ -114,7 +118,7 @@ public class Product {
     }
 
     public Long getCategoryId(){
-        return categoryId;
+        return category != null ? category.getId() : categoryId;
     }
 
     public void setCategoryId(Long categoryId){
@@ -122,7 +126,7 @@ public class Product {
     }
 
     public Long getSubcategoryId(){
-        return subcategoryId;
+        return subcategory != null ? subcategory.getId() : subcategoryId;
     }
 
     public void setSubcategoryId(Long subcategoryId){
