@@ -43,6 +43,12 @@ public class Product {
     @JsonIgnore
     private Subcategory subcategory;
 
+    @Transient
+    private Long categoryId;
+
+    @Transient
+    private Long subcategoryId;
+
     public String getName(){
         return this.name;
     }
@@ -105,6 +111,22 @@ public class Product {
 
     public void setCreatedAt(LocalDateTime createdAt){
         this.createdAt = createdAt;
+    }
+
+    public Long getCategoryId(){
+        return categoryId;
+    }
+
+    public void setCategoryId(Long categoryId){
+        this.categoryId = categoryId;
+    }
+
+    public Long getSubcategoryId(){
+        return subcategoryId;
+    }
+
+    public void setSubcategoryId(Long subcategoryId){
+        this.subcategoryId = subcategoryId;
     }
 }
 

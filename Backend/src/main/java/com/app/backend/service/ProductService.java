@@ -1,6 +1,8 @@
 package com.app.backend.service;
 
 import com.app.backend.model.Product;
+import com.app.backend.model.Category;
+import com.app.backend.model.Subcategory;
 import com.app.backend.repository.ProductRepository;
 import com.app.backend.repository.SubcategoryRepository;
 import com.app.backend.repository.CategoryRepository;
@@ -25,11 +27,11 @@ public class ProductService{
     } 
 
     public List<Product> findByCategoryId(Long categoryId){
-        return productRepository.findByCategoryId(categoryId);
+        return productRepository.findByCategory_Id(categoryId);
     } 
 
     public List<Product> findBySubcategoryId(Long subcategoryId){
-        return productRepository.findBySubcategoryId(subcategoryId);
+        return productRepository.findBySubcategory_Id(subcategoryId);
     } 
 
     public Product findById(Long id){
@@ -37,6 +39,18 @@ public class ProductService{
     }
 
     public Product create(Product product){
+        if (product.getCategoryId() != null) {
+            Category category = categoryRepository.findById(product.getCategoryId())
+                .orElseThrow(() -> new RuntimeException("Categoría no encontrada"));
+            product.setCategory(category);
+        }
+        
+        if (product.getSubcategoryId() != null) {
+            Subcategory subcategory = subcategoryRepository.findById(product.getSubcategoryId())
+                .orElseThrow(() -> new RuntimeException("Subcategoría no encontrada"));
+            product.setSubcategory(subcategory);
+        }
+        
         return productRepository.save(product);
     }
 
@@ -47,8 +61,19 @@ public class ProductService{
         product.setPrice(productDetails.getPrice());
         product.setStock(productDetails.getStock());
         product.setActive(productDetails.getActive());
-        product.setCategory(productDetails.getCategory());
-        product.setSubcategory(productDetails.getSubcategory());
+        
+        if (productDetails.getCategoryId() != null) {
+            Category category = categoryRepository.findById(productDetails.getCategoryId())
+                .orElseThrow(() -> new RuntimeException("Categoría no encontrada"));
+            product.setCategory(category);
+        }
+        
+        if (productDetails.getSubcategoryId() != null) {
+            Subcategory subcategory = subcategoryRepository.findById(productDetails.getSubcategoryId())
+                .orElseThrow(() -> new RuntimeException("Subcategoría no encontrada"));
+            product.setSubcategory(subcategory);
+        }
+        
         return productRepository.save(product);
     }
 

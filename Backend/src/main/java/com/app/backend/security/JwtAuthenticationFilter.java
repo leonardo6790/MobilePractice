@@ -35,6 +35,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
        throws ServletException, IOException{
         // Saltar autenticación para endpoints públicos
         String requestPath = request.getServletPath();
+        logger.info("Procesando request: {} {}", request.getMethod(), requestPath);
+        
         if (requestPath.equals("/api/auth/login")) {
             filterChain.doFilter(request, response);
             return;
@@ -42,14 +44,23 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
         
         try{
             String jwt = getJwtFromRequest(request);
+            logger.info("JWT extraído: {}", jwt != null ? "presente" : "ausente");
 
             if(StringUtils.hasText(jwt) && jwtTokenProvider.validateToken(jwt)) {
                 String username = jwtTokenProvider.getUsernameFromToken(jwt);
                 String role = jwtTokenProvider.getRoleFromToken(jwt);
                 
+                logger.info("Token validado - Usuario: {}, Role del token: {}", username, role);
+                
                 Collection<GrantedAuthority> authorities = new ArrayList<>();
                 if (role != null) {
+                    // Si el rol ya tiene el prefijo ROLE_, lo usamos tal cual
+                    // Si no, lo agregamos
+                    if (!role.startsWith("ROLE_")) {
+                        role = "ROLE_" + role;
+                    }
                     authorities.add(new SimpleGrantedAuthority(role));
+                    logger.info("Autoridad agregada: {}", role);
                 }
                 
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
@@ -57,6 +68,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
+                logger.info("Autenticación establecida exitosamente");
             }
         } catch (Exception ex) {
             logger.error("could not set user authentication in security context", ex);
