@@ -1,12 +1,11 @@
 package com.app.backend.repository;
 
-import com.app.backend.model.user;
+import com.app.backend.model.Subcategory;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.repository;
-import java.util.optional;
+import org.springframework.stereotype.Repository;
+import java.util.List;
 
 @Repository
-public interface SubcategoryRepository extends JpaRepository<Subcategory , Long>{
-    List<Subcategory> findByCategoryId (Long categoryId);
-
+public interface SubcategoryRepository extends JpaRepository<Subcategory, Long>{
+    List<Subcategory> findByCategoryId(Long categoryId);
 }

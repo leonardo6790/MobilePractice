@@ -1,12 +1,12 @@
 package com.app.backend.service;
 
 import com.app.backend.model.Category;
-import com.app.backend.model.CategoryRepository;
+import com.app.backend.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.streotype.service;
-import java.util.list;
+import org.springframework.stereotype.Service;
+import java.util.List;
 
-@service
+@Service
 public class CategoryService{
 
     @Autowired
@@ -17,11 +17,11 @@ public class CategoryService{
     } 
 
     public Category findById(Long id){
-        return categoryRepository.findById(id).orElseThrow(()-> new RunTimeException("Categoria no encontrada"));
+        return categoryRepository.findById(id).orElseThrow(()-> new RuntimeException("Categoria no encontrada"));
     }
 
     public Category create(Category category){
-        return CategoryRepository.save(category);
+        return categoryRepository.save(category);
     }
 
     public Category update(Long id, Category categoryDetails){

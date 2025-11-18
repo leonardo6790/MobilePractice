@@ -6,7 +6,7 @@ import com.app.backend.repository.UserRepository;
 import com.app.backend.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.security.crypto.PasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -35,7 +35,7 @@ public class DataInitializer implements CommandLineRunner {
     }
 
     if(userRepository.existsByUsername("coordinador")){
-            User existingCoord = userRepository.findByUsername("Coord").orElse(null);
+            User existingCoord = userRepository.findByUsername("coordinador").orElse(null);
             if (existingCoord != null){
             userRepository.delete(existingCoord);
             System.out.println("Usuario Coordinador existente eliminado");
@@ -52,15 +52,15 @@ public class DataInitializer implements CommandLineRunner {
     userRepository.save(admin);
     System.out.println("Usuario Admin Creado - username: admin, password: admin123");
 
-    //CrearUsuarioAdmin
+    //CrearUsuarioCoordinador
     User coordinador = new User();
-    admin.setUsername("coordinador");
-    admin.setPassword(passwordEncoder.encode("coord123"));
-    admin.setEmail("coordinador@app.com");
-    admin.setRole(User.Role.COORDINADOR);
-    admin.setActive(true);
+    coordinador.setUsername("coordinador");
+    coordinador.setPassword(passwordEncoder.encode("coord123"));
+    coordinador.setEmail("coordinador@app.com");
+    coordinador.setRole(User.Role.COORDINADOR);
+    coordinador.setActive(true);
     userRepository.save(coordinador);
-    System.out.println("Usuario coordinador Creado - username: coordinadro, password: coord123");
+    System.out.println("Usuario coordinador Creado - username: coordinador, password: coord123");
     System.out.println("Data Initializer completado exitosamente");
 }
     

@@ -3,40 +3,54 @@ package com.app.backend.model;
 import jakarta.persistence.*;
 import lombok.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import java.util.list;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import java.util.List;
+import java.time.LocalDateTime;
+import org.hibernate.annotations.CreationTimestamp;
 
 @Data
 @Entity
-@Table(name ="Subcategory")
-
+@Table(name ="subcategories")
 public class Subcategory {
     @Id
-    @GeneretedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column (nullable = false, unique = true)
+    @Column(nullable = false, unique = true)
     private String name;
 
-    @Column (length = 500)
+    @Column(length = 500)
     private String description;
 
-    @Column (nullable =  false)
+    @Column(nullable = false)
     private Boolean active = true;
 
-    @OneToMany (mapperBy = "subcategory" Cascade = CascadeType.All)
+    @CreationTimestamp
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime createdAt;
+
+    @OneToMany(mappedBy = "subcategory", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Product> products;
 
     @ManyToOne
     @JoinColumn(name="category_id", nullable = false)
+    @JsonBackReference
     private Category category;
 
-
-    public String getName(){
-        this.name = name;
+    public Long getId(){
+        return id;
     }
 
-    public void setName(){
+    public void setId(Long id){
+        this.id = id;
+    }
+
+    public String getName(){
+        return this.name;
+    }
+
+    public void setName(String name){
         this.name = name;
     }
 
@@ -44,7 +58,7 @@ public class Subcategory {
         return description;
     }
 
-    public Void setDescription(){
+    public void setDescription(String description){
         this.description = description;
     }
 
@@ -52,7 +66,7 @@ public class Subcategory {
         return active;
     }
 
-    public Void setActive(){
+    public void setActive(Boolean active){
         this.active = active;
     }
 
@@ -61,6 +75,24 @@ public class Subcategory {
     }
 
     public void setCategory(Category category){
-        this.category =  category;
+        this.category = category;
+    }
+
+    public List<Product> getProducts(){
+        return products;
+    }
+
+    public void setProducts(List<Product> products){
+        this.products = products;
+    }
+
+    public LocalDateTime getCreatedAt(){
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt){
+        this.createdAt = createdAt;
     }
 }
+
+

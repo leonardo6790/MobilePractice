@@ -1,14 +1,14 @@
 package com.app.backend.service;
 
 import com.app.backend.model.Subcategory;
-import com.app.backend.model.SubcategoryRepository;
+import com.app.backend.repository.SubcategoryRepository;
 import com.app.backend.model.Category;
-import com.app.backend.model.CategoryRepository;
+import com.app.backend.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.streotype.service;
-import java.util.list;
+import org.springframework.stereotype.Service;
+import java.util.List;
 
-@service
+@Service
 public class SubcategoryService{
 
     @Autowired
@@ -27,10 +27,23 @@ public class SubcategoryService{
     } 
 
     public Subcategory findById(Long id){
-        return subcategoryRepository.findById(id).orElseThrow(()-> new RunTimeException("Subcategoria no encontrada"));
+        return subcategoryRepository.findById(id).orElseThrow(()-> new RuntimeException("Subcategoria no encontrada"));
     }
 
     public Subcategory create(Subcategory subcategory){
+        return subcategoryRepository.save(subcategory);
+    }
+
+    public Subcategory createWithCategoryId(String name, String description, Long categoryId, Boolean active){
+        Category category = categoryRepository.findById(categoryId)
+            .orElseThrow(() -> new RuntimeException("Categoría no encontrada"));
+        
+        Subcategory subcategory = new Subcategory();
+        subcategory.setName(name);
+        subcategory.setDescription(description);
+        subcategory.setActive(active != null ? active : true);
+        subcategory.setCategory(category);
+        
         return subcategoryRepository.save(subcategory);
     }
 
@@ -40,6 +53,19 @@ public class SubcategoryService{
         subcategory.setDescription(subcategoryDetails.getDescription());
         subcategory.setActive(subcategoryDetails.getActive());
         subcategory.setCategory(subcategoryDetails.getCategory());
+        return subcategoryRepository.save(subcategory);
+    }
+
+    public Subcategory updateWithCategoryId(Long id, String name, String description, Long categoryId, Boolean active){
+        Subcategory subcategory = findById(id);
+        Category category = categoryRepository.findById(categoryId)
+            .orElseThrow(() -> new RuntimeException("Categoría no encontrada"));
+        
+        subcategory.setName(name);
+        subcategory.setDescription(description);
+        subcategory.setActive(active != null ? active : true);
+        subcategory.setCategory(category);
+        
         return subcategoryRepository.save(subcategory);
     }
 

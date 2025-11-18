@@ -1,6 +1,6 @@
 package com.app.backend.dto;
 
-import com.app.backend.model.USer;
+import com.app.backend.model.User;
 
 public class UserCreateRequest{
     private String username;
@@ -16,7 +16,7 @@ public class UserCreateRequest{
         return username;
     }
 
-    public void setUsername(Strign username){
+    public void setUsername(String username){
         this.username = username;
     }
 
@@ -49,6 +49,6 @@ public class UserCreateRequest{
     }
 
     public void setActive(Boolean active){
-        this.active =  active;
+        this.active = active;
     }
 }

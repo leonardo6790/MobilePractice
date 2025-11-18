@@ -1,12 +1,14 @@
 package com.app.backend.service;
 
 import com.app.backend.model.Product;
-import com.app.backend.model.PoductRepository;
+import com.app.backend.repository.ProductRepository;
+import com.app.backend.repository.SubcategoryRepository;
+import com.app.backend.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.streotype.service;
-import java.util.list;
+import org.springframework.stereotype.Service;
+import java.util.List;
 
-@service
+@Service
 public class ProductService{
 
     @Autowired
@@ -31,7 +33,7 @@ public class ProductService{
     } 
 
     public Product findById(Long id){
-        return productRepository.findById(id).orElseThrow(()-> new RunTimeException("Categoria no encontrada"));
+        return productRepository.findById(id).orElseThrow(()-> new RuntimeException("Producto no encontrado"));
     }
 
     public Product create(Product product){
@@ -46,7 +48,7 @@ public class ProductService{
         product.setStock(productDetails.getStock());
         product.setActive(productDetails.getActive());
         product.setCategory(productDetails.getCategory());
-        product.setSubCategory(productDetails.getsubCategory());
+        product.setSubcategory(productDetails.getSubcategory());
         return productRepository.save(product);
     }
 

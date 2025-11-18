@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía de Pruebas Postman - Backend App Mobile</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f4f4f4;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        header {
+            border-bottom: 4px solid #0066cc;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+        }
+        h1 {
+            color: #0066cc;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            color: #666;
+            font-size: 1.1em;
+        }
+        .info-box {
+            background: #e8f4f8;
+            border-left: 4px solid #0066cc;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .info-box strong {
+            color: #0066cc;
+        }
+        section {
+            margin: 30px 0;
+            page-break-inside: avoid;
+        }
+        h2 {
+            color: #0066cc;
+            border-bottom: 2px solid #0066cc;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        h3 {
+            color: #333;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            background: #f0f0f0;
+            padding: 8px 12px;
+            border-radius: 4px;
+        }
+        .endpoint {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+            page-break-inside: avoid;
+        }
+        .method {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-weight: bold;
+            margin-right: 10px;
+            color: white;
+            font-size: 0.9em;
+        }
+        .method.get {
+            background: #61affe;
+        }
+        .method.post {
+            background: #49cc90;
+        }
+        .method.put {
+            background: #fca130;
+        }
+        .method.delete {
+            background: #f93e3e;
+        }
+        .url {
+            font-family: 'Courier New', monospace;
+            background: #f0f0f0;
+            padding: 8px 12px;
+            border-radius: 4px;
+            display: inline-block;
+            margin: 10px 0;
+            word-break: break-all;
+        }
+        .description {
+            color: #666;
+            margin: 10px 0;
+            font-style: italic;
+        }
+        .table-wrapper {
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+        }
+        th {
+            background: #0066cc;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+        td {
+            border: 1px solid #ddd;
+            padding: 10px 12px;
+        }
+        tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+            line-height: 1.4;
+        }
+        .section-title {
+            font-size: 1.3em;
+            color: white;
+            background: #0066cc;
+            padding: 10px 15px;
+            margin: 20px 0 15px 0;
+            border-radius: 4px;
+        }
+        .auth-required {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 10px 12px;
+            margin: 10px 0;
+            border-radius: 4px;
+            font-size: 0.95em;
+        }
+        .success {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 10px 12px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+        .page-break {
+            page-break-after: always;
+            margin: 40px 0;
+            border-top: 2px dashed #ccc;
+            padding-top: 40px;
+        }
+        ul, ol {
+            margin-left: 20px;
+            margin-bottom: 10px;
+        }
+        li {
+            margin-bottom: 5px;
+        }
+        .note {
+            background: #e7f3ff;
+            border-left: 4px solid #2196F3;
+            padding: 10px 12px;
+            margin: 10px 0;
+            border-radius: 4px;
+            font-size: 0.95em;
+        }
+        @media print {
+            body {
+                background: white;
+            }
+            .container {
+                box-shadow: none;
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🧪 Guía de Pruebas Postman</h1>
+            <p class="subtitle">Backend - Aplicación Mobile - Spring Boot 3.2.0</p>
+        </header>
+
+        <div class="info-box">
+            <strong>📌 Base URL:</strong> http://localhost:8080<br>
+            <strong>🗄️ Base de datos:</strong> app_mobile_db (MySQL)<br>
+            <strong>👤 Usuarios de prueba:</strong><br>
+            &nbsp;&nbsp;• Admin: <code>admin</code> / <code>admin123</code><br>
+            &nbsp;&nbsp;• Coordinador: <code>coordinador</code> / <code>coord123</code>
+        </div>
+
+        <!-- SECTION 1: AUTENTICACIÓN -->
+        <section>
+            <div class="section-title">1. AUTENTICACIÓN</div>
+            
+            <div class="endpoint">
+                <div>
+                    <span class="method post">POST</span>
+                    <span class="url">/api/auth/login</span>
+                </div>
+                <p class="description">🔐 Obtener token JWT para acceder a los endpoints protegidos</p>
+                
+                <h4 style="margin-top: 15px; color: #333;">📤 Request Body:</h4>
+                <div class="code-block">{
+  "username": "admin",
+  "password": "admin123"
+}</div>
+
+                <h4 style="margin-top: 15px; color: #333;">📥 Response Esperado (200 OK):</h4>
+                <div class="code-block">{
+  "token": "eyJhbGciOiJIUzUxMiJ9...",
+  "user": {
+    "id": 1,
+    "username": "admin",
+    "email": "admin@app.com",
+    "role": "ADMIN",
+    "active": true,
+    "createdAt": "2025-11-18T01:18:36..."
+  }
+}</div>
+
+                <div class="auth-required">
+                    <strong>⚠️ Importante:</strong> Copia el valor del campo <code>token</code> para usarlo en las siguientes pruebas. Este token se utiliza en el header <code>Authorization: Bearer &lt;token&gt;</code>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: CATEGORÍAS -->
+        <section>
+            <div class="section-title">2. CATEGORÍAS</div>
+            
+            <!-- GET ALL CATEGORIES -->
+            <div class="endpoint">
+                <div>
+                    <span class="method get">GET</span>
+                    <span class="url">/api/categories</span>
+                </div>
+                <p class="description">📋 Obtener todas las categorías</p>
+                <div class="auth-required">Requiere autenticación (ADMIN o COORDINADOR)</div>
+                
+                <h4 style="margin-top: 15px; color: #333;">📥 Response Esperado (200 OK):</h4>
+                <div class="code-block">[
+  {
+    "id": 1,
+    "name": "Electrónica",
+    "description": "Productos electrónicos",
+    "active": true
+  }
+]</div>
+            </div>
+
+            <!-- GET CATEGORY BY ID -->
+            <div class="endpoint">
+                <div>
+                    <span class="method get">GET</span>
+                    <span class="url">/api/categories/{id}</span>
+                </div>
+                <p class="description">🔍 Obtener una categoría por su ID</p>
+                <div class="auth-required">Requiere autenticación (ADMIN o COORDINADOR)</div>
+                
+                <h4 style="margin-top: 15px; color: #333;">📌 Parámetro:</h4>
+                <div class="table-wrapper">
+                    <table>
+                        <tr>
+                            <th>Parámetro</th>
+                            <th>Tipo</th>
+                            <th>Descripción</th>
+                            <th>Ejemplo</th>
+                        </tr>
+                        <tr>
+                            <td>id</td>
+                            <td>Long</td>
+                            <td>ID de la categoría</td>
+                            <td>1</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <h4 style="margin-top: 15px; color: #333;">📥 Response Esperado (200 OK):</h4>
+                <div class="code-block">{
+  "id": 1,
+  "name": "Electrónica",
+  "description": "Productos electrónicos",
+  "active": true
+}</div>
+            </div>
+
+            <!-- CREATE CATEGORY -->
+            <div class="endpoint">
+                <div>
+                    <span class="method post">POST</span>
+                    <span class="url">/api/categories</span>
+                </div>
+                <p class="description">➕ Crear una nueva categoría</p>
+                <div class="auth-required">Requiere autenticación (ADMIN o COORDINADOR)</div>
+                
+                <h4 style="margin-top: 15px; color: #333;">📤 Request Body:</h4>
+                <div class="code-block">{
+  "name": "Ropa y Accesorios",
+  "description": "Prendas de vestir y complementos",
+  "active": true
+}</div>
+
+                <h4 style="margin-top: 15px; color: #333;">📥 Response Esperado (200 OK):</h4>
+                <div class="code-block">{
+  "id": 2,
+  "name": "Ropa y Accesorios",
+  "description": "Prendas de vestir y complementos",
+  "active": true
+}</div>
+            </div>
+
+            <!-- UPDATE CATEGORY -->
+            <div class="endpoint">
+                <div>
+                    <span class="method put">PUT</span>
+                    <span class="url">/api/categories/{id}</span>
+                </div>
+                <p class="description">✏️ Actualizar una categoría</p>
+                <div class="auth-required">Requiere autenticación (ADMIN o COORDINADOR)</div>
+                
+                <h4 style="margin-top: 15px; color: #333;">📤 Request Body:</h4>
+                <div class="code-block">{
+  "name": "Electrónica - Actualizado",
+  "description": "Productos electrónicos de calidad",
+  "active": true
+}</div>
+            </div>
+
+            <!-- DELETE CATEGORY -->
+            <div class="endpoint">
+                <div>
+                    <span class="method delete">DELETE</span>
+                    <span class="url">/api/categories/{id}</span>
+                </div>
+                <p class="description">🗑️ Eliminar una categoría</p>
+                <div class="auth-required">Requiere autenticación (ADMIN solo)</div>
+                
+                <h4 style="margin-top: 15px; color: #333;">📥 Response Esperado (200 OK):</h4>
+                <div class="code-block">{
+  "message": "Categoria eliminada exitosamente"
+}</div>
+            </div>
+        </section>
+
+        <div class="page-break"></div>
+
+        <!-- SECTION 3: SUBCATEGORÍAS -->
+        <section>
+            <div class="section-title">3. SUBCATEGORÍAS</div>
+            
+            <!-- GET ALL SUBCATEGORIES -->
+            <div class="endpoint">
+                <div>
+                    <span class="method get">GET</span>
+                    <span class="url">/api/subcategories</span>
+                </div>
+                <p class="description">📋 Obtener todas las subcategorías</p>
+                <div class="auth-required">Requiere autenticación (ADMIN o COORDINADOR)</div>
+            </div>
+
+            <!-- GET SUBCATEGORIES BY CATEGORY -->
+            <div class="endpoint">
+                <div>
+                    <span class="method get">GET</span>
+                    <span class="url">/api/subcategories/category/{categoryId}</span>
+                </div>
+                <p class="description">🔍 Obtener subcategorías de una categoría específica</p>
+                <div class="auth-required">Requiere autenticación (ADMIN o COORDINADOR)</div>
+                
+                <h4 style="margin-top: 15px; color: #333;">📌 Parámetro:</h4>
+                <div class="table-wrapper">
+                    <table>
+                        <tr>
+                            <th>Parámetro</th>
+                            <th>Tipo</th>
+                            <th>Descripción</th>
+                            <th>Ejemplo</th>
+                        </tr>
+                        <tr>
+                            <td>categoryId</td>
+                            <td>Long</td>
+                            <td>ID de la categoría padre</td>
+                            <td>1</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- GET SUBCATEGORY BY ID -->
+            <div class="endpoint">
+                <div>
+                    <span class="method get">GET</span>
+                    <span class="url">/api/subcategories/{id}</span>
+                </div>
+                <p class="description">🔍 Obtener una subcategoría por su ID</p>
+                <div class="auth-required">Requiere autenticación (ADMIN o COORDINADOR)</div>
+            </div>
+
+            <!-- CREATE SUBCATEGORY -->
+            <div class="endpoint">
+                <div>
+                    <span class="method post">POST</span>
+                    <span class="url">/api/subcategories</span>
+                </div>
+                <p class="description">➕ Crear una nueva subcategoría</p>
+                <div class="auth-required">Requiere autenticación (ADMIN o COORDINADOR)</div>
+                
+                <h4 style="margin-top: 15px; color: #333;">📤 Request Body:</h4>
+                <div class="code-block">{
+  "name": "Laptops",
+  "description": "Computadoras portátiles",
+  "categoryId": 1,
+  "active": true
+}</div>
+            </div>
+
+            <!-- UPDATE SUBCATEGORY -->
+            <div class="endpoint">
+                <div>
+                    <span class="method put">PUT</span>
+                    <span class="url">/api/subcategories/{id}</span>
+                </div>
+                <p class="description">✏️ Actualizar una subcategoría</p>
+                <div class="auth-required">Requiere autenticación (ADMIN o COORDINADOR)</div>
+            </div>
+
+            <!-- DELETE SUBCATEGORY -->
+            <div class="endpoint">
+                <div>
+                    <span class="method delete">DELETE</span>
+                    <span class="url">/api/subcategories/{id}</span>
+                </div>
+                <p class="description">🗑️ Eliminar una subcategoría</p>
+                <div class="auth-required">Requiere autenticación (ADMIN solo)</div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: PRODUCTOS -->
+        <section>
+            <div class="section-title">4. PRODUCTOS</div>
+            
+            <!-- GET ALL PRODUCTS -->
+            <div class="endpoint">
+                <div>
+                    <span class="method get">GET</span>
+                    <span class="url">/api/product</span>
+                </div>
+                <p class="description">📋 Obtener todos los productos</p>
+                <div class="auth-required">Requiere autenticación (ADMIN o COORDINADOR)</div>
+            </div>
+
+            <!-- GET PRODUCTS BY CATEGORY -->
+            <div class="endpoint">
+                <div>
+                    <span class="method get">GET</span>
+                    <span class="url">/api/product/category/{categoryId}</span>
+                </div>
+                <p class="description">🔍 Obtener productos de una categoría específica</p>
+                <div class="auth-required">Requiere autenticación (ADMIN o COORDINADOR)</div>
+                
+                <h4 style="margin-top: 15px; color: #333;">📌 Parámetro:</h4>
+                <div class="table-wrapper">
+                    <table>
+                        <tr>
+                            <th>Parámetro</th>
+                            <th>Tipo</th>
+                            <th>Descripción</th>
+                            <th>Ejemplo</th>
+                        </tr>
+                        <tr>
+                            <td>categoryId</td>
+                            <td>Long</td>
+                            <td>ID de la categoría</td>
+                            <td>1</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- GET PRODUCTS BY SUBCATEGORY -->
+            <div class="endpoint">
+                <div>
+                    <span class="method get">GET</span>
+                    <span class="url">/api/product/subcategory/{subcategoryId}</span>
+                </div>
+                <p class="description">🔍 Obtener productos de una subcategoría específica</p>
+                <div class="auth-required">Requiere autenticación (ADMIN o COORDINADOR)</div>
+                
+                <h4 style="margin-top: 15px; color: #333;">📌 Parámetro:</h4>
+                <div class="table-wrapper">
+                    <table>
+                        <tr>
+                            <th>Parámetro</th>
+                            <th>Tipo</th>
+                            <th>Descripción</th>
+                            <th>Ejemplo</th>
+                        </tr>
+                        <tr>
+                            <td>subcategoryId</td>
+                            <td>Long</td>
+                            <td>ID de la subcategoría</td>
+                            <td>1</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- GET PRODUCT BY ID -->
+            <div class="endpoint">
+                <div>
+                    <span class="method get">GET</span>
+                    <span class="url">/api/product/{id}</span>
+                </div>
+                <p class="description">🔍 Obtener un producto por su ID</p>
+                <div class="auth-required">Requiere autenticación (ADMIN o COORDINADOR)</div>
+            </div>
+
+            <!-- CREATE PRODUCT -->
+            <div class="endpoint">
+                <div>
+                    <span class="method post">POST</span>
+                    <span class="url">/api/product</span>
+                </div>
+                <p class="description">➕ Crear un nuevo producto</p>
+                <div class="auth-required">Requiere autenticación (ADMIN o COORDINADOR)</div>
+                
+                <h4 style="margin-top: 15px; color: #333;">📤 Request Body:</h4>
+                <div class="code-block">{
+  "name": "Laptop Dell XPS 13",
+  "description": "Laptop ultradelgada de 13 pulgadas",
+  "price": 1299.99,
+  "stock": 15,
+  "categoryId": 1,
+  "subcategoryId": 1,
+  "active": true
+}</div>
+            </div>
+
+            <!-- UPDATE PRODUCT -->
+            <div class="endpoint">
+                <div>
+                    <span class="method put">PUT</span>
+                    <span class="url">/api/product/{id}</span>
+                </div>
+                <p class="description">✏️ Actualizar un producto</p>
+                <div class="auth-required">Requiere autenticación (ADMIN o COORDINADOR)</div>
+            </div>
+
+            <!-- DELETE PRODUCT -->
+            <div class="endpoint">
+                <div>
+                    <span class="method delete">DELETE</span>
+                    <span class="url">/api/product/{id}</span>
+                </div>
+                <p class="description">🗑️ Eliminar un producto</p>
+                <div class="auth-required">Requiere autenticación (ADMIN solo)</div>
+            </div>
+        </section>
+
+        <div class="page-break"></div>
+
+        <!-- SECTION 5: USUARIOS -->
+        <section>
+            <div class="section-title">5. USUARIOS</div>
+            
+            <!-- GET ALL USERS -->
+            <div class="endpoint">
+                <div>
+                    <span class="method get">GET</span>
+                    <span class="url">/api/users</span>
+                </div>
+                <p class="description">📋 Obtener todos los usuarios</p>
+                <div class="auth-required">Requiere autenticación (ADMIN o COORDINADOR)</div>
+            </div>
+
+            <!-- GET USER BY ID -->
+            <div class="endpoint">
+                <div>
+                    <span class="method get">GET</span>
+                    <span class="url">/api/users/{id}</span>
+                </div>
+                <p class="description">🔍 Obtener un usuario por su ID</p>
+                <div class="auth-required">Requiere autenticación (ADMIN o COORDINADOR)</div>
+            </div>
+
+            <!-- CREATE USER -->
+            <div class="endpoint">
+                <div>
+                    <span class="method post">POST</span>
+                    <span class="url">/api/users</span>
+                </div>
+                <p class="description">➕ Crear un nuevo usuario</p>
+                <div class="auth-required">Requiere autenticación (ADMIN o COORDINADOR)</div>
+                
+                <h4 style="margin-top: 15px; color: #333;">📤 Request Body:</h4>
+                <div class="code-block">{
+  "username": "nuevo_usuario",
+  "email": "usuario@app.com",
+  "password": "password123",
+  "role": "COORDINADOR",
+  "active": true
+}</div>
+            </div>
+
+            <!-- UPDATE USER -->
+            <div class="endpoint">
+                <div>
+                    <span class="method put">PUT</span>
+                    <span class="url">/api/users/{id}</span>
+                </div>
+                <p class="description">✏️ Actualizar un usuario</p>
+                <div class="auth-required">Requiere autenticación (ADMIN o COORDINADOR)</div>
+                
+                <h4 style="margin-top: 15px; color: #333;">📤 Request Body:</h4>
+                <div class="code-block">{
+  "username": "usuario_actualizado",
+  "email": "usuario_nuevo@app.com",
+  "role": "COORDINADOR",
+  "active": true
+}</div>
+            </div>
+
+            <!-- DELETE USER -->
+            <div class="endpoint">
+                <div>
+                    <span class="method delete">DELETE</span>
+                    <span class="url">/api/users/{id}</span>
+                </div>
+                <p class="description">🗑️ Eliminar un usuario</p>
+                <div class="auth-required">Requiere autenticación (ADMIN solo)</div>
+            </div>
+        </section>
+
+        <!-- SECTION 6: INSTRUCCIONES PARA POSTMAN -->
+        <section>
+            <div class="section-title">6. CONFIGURACIÓN EN POSTMAN</div>
+            
+            <h3>Paso 1: Configurar el Token JWT</h3>
+            <ol>
+                <li>Abre Postman y crea una nueva petición</li>
+                <li>Ve a <strong>POST</strong> → Ingresa la URL: <code>http://localhost:8080/api/auth/login</code></li>
+                <li>En la pestaña <strong>Body</strong>, selecciona <strong>raw</strong> y <strong>JSON</strong></li>
+                <li>Pega el siguiente JSON:
+                    <div class="code-block">{
+  "username": "admin",
+  "password": "admin123"
+}</div>
+                </li>
+                <li>Haz clic en <strong>Send</strong></li>
+                <li>Copia el valor del campo <code>"token"</code> de la respuesta</li>
+            </ol>
+
+            <h3>Paso 2: Usar el Token en tus Peticiones</h3>
+            <ol>
+                <li>En cualquier petición que requiera autenticación:</li>
+                <li>Ve a la pestaña <strong>Headers</strong></li>
+                <li>Agrega una nueva cabecera:
+                    <div class="code-block">Key: Authorization
+Value: Bearer &lt;tu_token_aqui&gt;</div>
+                </li>
+                <li>Reemplaza <code>&lt;tu_token_aqui&gt;</code> con el token que copiaste</li>
+            </ol>
+
+            <h3>Paso 3: Usar Variables de Ambiente (Recomendado)</h3>
+            <ol>
+                <li>En Postman, haz clic en el ícono de engranaje ⚙️ en la esquina superior derecha</li>
+                <li>Selecciona <strong>Manage Environments</strong></li>
+                <li>Haz clic en <strong>Create</strong></li>
+                <li>Agrega las siguientes variables:</li>
+            </ol>
+            <div class="table-wrapper">
+                <table>
+                    <tr>
+                        <th>Variable</th>
+                        <th>Valor Inicial</th>
+                        <th>Descripción</th>
+                    </tr>
+                    <tr>
+                        <td>base_url</td>
+                        <td>http://localhost:8080</td>
+                        <td>URL base del servidor</td>
+                    </tr>
+                    <tr>
+                        <td>token</td>
+                        <td>{{token_aqui}}</td>
+                        <td>Token JWT (se actualiza después del login)</td>
+                    </tr>
+                    <tr>
+                        <td>admin_user</td>
+                        <td>admin</td>
+                        <td>Usuario administrador para login</td>
+                    </tr>
+                    <tr>
+                        <td>admin_pass</td>
+                        <td>admin123</td>
+                        <td>Contraseña administrador</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="note">
+                <strong>💡 Tip:</strong> En Postman, puedes usar <code>{{variable_name}}</code> para referenciar variables. Por ejemplo: <code>{{base_url}}/api/categories</code>
+            </div>
+        </section>
+
+        <!-- SECTION 7: GUÍA DE PRUEBAS -->
+        <section>
+            <div class="section-title">7. ORDEN RECOMENDADO DE PRUEBAS</div>
+            
+            <h3>Fase 1: Autenticación</h3>
+            <ol>
+                <li>✅ POST /api/auth/login (con usuario admin)</li>
+                <li>✅ POST /api/auth/login (con usuario coordinador)</li>
+            </ol>
+
+            <h3>Fase 2: Crear Datos Base</h3>
+            <ol>
+                <li>✅ POST /api/categories (crear 2-3 categorías)</li>
+                <li>✅ POST /api/subcategories (crear subcategorías para cada categoría)</li>
+                <li>✅ POST /api/product (crear 3-4 productos)</li>
+                <li>✅ POST /api/users (crear usuario nuevo con rol COORDINADOR)</li>
+            </ol>
+
+            <h3>Fase 3: Consultar Datos</h3>
+            <ol>
+                <li>✅ GET /api/categories (obtener todas)</li>
+                <li>✅ GET /api/categories/{id} (obtener por ID)</li>
+                <li>✅ GET /api/subcategories (obtener todas)</li>
+                <li>✅ GET /api/subcategories/category/{categoryId}</li>
+                <li>✅ GET /api/product (obtener todos)</li>
+                <li>✅ GET /api/product/category/{categoryId}</li>
+                <li>✅ GET /api/product/subcategory/{subcategoryId}</li>
+                <li>✅ GET /api/users (obtener todos)</li>
+                <li>✅ GET /api/users/{id} (obtener por ID)</li>
+            </ol>
+
+            <h3>Fase 4: Actualizar Datos</h3>
+            <ol>
+                <li>✅ PUT /api/categories/{id}</li>
+                <li>✅ PUT /api/subcategories/{id}</li>
+                <li>✅ PUT /api/product/{id}</li>
+                <li>✅ PUT /api/users/{id}</li>
+            </ol>
+
+            <h3>Fase 5: Eliminar Datos (Como Admin)</h3>
+            <ol>
+                <li>✅ DELETE /api/product/{id}</li>
+                <li>✅ DELETE /api/subcategories/{id}</li>
+                <li>✅ DELETE /api/categories/{id}</li>
+                <li>✅ DELETE /api/users/{id}</li>
+            </ol>
+        </section>
+
+        <!-- SECTION 8: CÓDIGOS DE RESPUESTA -->
+        <section>
+            <div class="section-title">8. CÓDIGOS DE RESPUESTA HTTP</div>
+            
+            <div class="table-wrapper">
+                <table>
+                    <tr>
+                        <th>Código</th>
+                        <th>Estado</th>
+                        <th>Descripción</th>
+                    </tr>
+                    <tr>
+                        <td><strong>200</strong></td>
+                        <td>OK</td>
+                        <td>La petición fue exitosa</td>
+                    </tr>
+                    <tr>
+                        <td><strong>201</strong></td>
+                        <td>Created</td>
+                        <td>El recurso fue creado exitosamente</td>
+                    </tr>
+                    <tr>
+                        <td><strong>400</strong></td>
+                        <td>Bad Request</td>
+                        <td>Error en la solicitud (datos inválidos)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>401</strong></td>
+                        <td>Unauthorized</td>
+                        <td>Se requiere autenticación o token inválido</td>
+                    </tr>
+                    <tr>
+                        <td><strong>403</strong></td>
+                        <td>Forbidden</td>
+                        <td>No tienes permisos para acceder a este recurso</td>
+                    </tr>
+                    <tr>
+                        <td><strong>404</strong></td>
+                        <td>Not Found</td>
+                        <td>El recurso no fue encontrado</td>
+                    </tr>
+                    <tr>
+                        <td><strong>500</strong></td>
+                        <td>Server Error</td>
+                        <td>Error interno del servidor</td>
+                    </tr>
+                </table>
+            </div>
+        </section>
+
+        <!-- SECTION 9: TIPS Y SOLUCIÓN DE PROBLEMAS -->
+        <section>
+            <div class="section-title">9. TIPS Y SOLUCIÓN DE PROBLEMAS</div>
+            
+            <h3>❌ Error: "Connection refused"</h3>
+            <div class="note">
+                Verifica que:
+                <ul>
+                    <li>✓ El servidor Spring Boot está en ejecución (en puerto 8080)</li>
+                    <li>✓ MySQL está ejecutándose (XAMPP iniciado)</li>
+                    <li>✓ La base de datos <code>app_mobile_db</code> existe</li>
+                </ul>
+            </div>
+
+            <h3>❌ Error: "401 Unauthorized"</h3>
+            <div class="note">
+                Significa que:
+                <ul>
+                    <li>✓ Falta el header <code>Authorization</code></li>
+                    <li>✓ El token es inválido o expiró (24 horas)</li>
+                    <li>✓ El formato del header es incorrecto (debe ser: <code>Bearer &lt;token&gt;</code>)</li>
+                </ul>
+            </div>
+
+            <h3>❌ Error: "403 Forbidden"</h3>
+            <div class="note">
+                Significa que:
+                <ul>
+                    <li>✓ Tu usuario no tiene el rol requerido</li>
+                    <li>✓ El endpoint requiere rol ADMIN y estás usando COORDINADOR</li>
+                </ul>
+            </div>
+
+            <h3>❌ Error: "Column 'email' cannot be null"</h3>
+            <div class="note">
+                Cuando creas un usuario, asegúrate que incluyas el campo <code>email</code> en el JSON.
+            </div>
+
+            <h3>✅ Buenas Prácticas</h3>
+            <ol>
+                <li>Siempre verifica que el servidor esté corriendo antes de hacer peticiones</li>
+                <li>Usa variables de ambiente en Postman para reutilizar valores</li>
+                <li>Genera un nuevo token después de 24 horas (expiración)</li>
+                <li>Lee los mensajes de error para entender qué salió mal</li>
+                <li>Usa métodos GET para consultas, POST para crear, PUT para actualizar, DELETE para eliminar</li>
+            </ol>
+        </section>
+
+        <footer style="margin-top: 50px; padding-top: 20px; border-top: 2px solid #0066cc; color: #666; font-size: 0.95em;">
+            <p>📄 <strong>Guía de Pruebas Postman</strong> - Backend App Mobile</p>
+            <p>Generado: 18 de Noviembre de 2025</p>
+            <p>Spring Boot 3.2.0 | Java 17 | MySQL 8.0</p>
+        </footer>
+    </div>
+</body>
+</html>

@@ -3,17 +3,17 @@ package com.app.backend.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
-import java.time.LocalDataTime;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
 @Table(name = "users")
 public class User {
     @Id
-    @GeneretedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique =  true)
+    @Column(nullable = false, unique = true)
     private String username;
 
     @JsonIgnore
@@ -31,7 +31,7 @@ public class User {
     private Boolean active = true;
 
     @Column(name = "created_at")
-    private LocalDataTime created_at = LocalDataTime.now();
+    private LocalDateTime created_at = LocalDateTime.now();
 
     public enum Role {
         ADMIN, COORDINADOR

@@ -3,47 +3,51 @@ package com.app.backend.model;
 import jakarta.persistence.*;
 import lombok.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import java.util.list;
+import java.util.List;
+import java.time.LocalDateTime;
+import org.hibernate.annotations.CreationTimestamp;
 
 @Data
 @Entity
 @Table(name ="products")
-
 public class Product {
     @Id
-    @GeneretedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column (nullable = false, unique = true)
+    @Column(nullable = false, unique = true)
     private String name;
 
-    @Column (length = 1000)
+    @Column(length = 1000)
     private String description;
     
-    @Column (nullable = false, unique = true)
-    private Double price ;
+    @Column(nullable = false, unique = true)
+    private Double price;
 
     private Integer stock;
 
-    @Column (nullable =  false)
+    @Column(nullable = false)
     private Boolean active = true;
 
+    @CreationTimestamp
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime createdAt;
 
     @ManyToOne
     @JoinColumn(name="category_id", nullable = false)
+    @JsonIgnore
     private Category category;
-
 
     @ManyToOne
     @JoinColumn(name="subcategory_id", nullable = false)
-    private SubCategory subcategory;
-
+    @JsonIgnore
+    private Subcategory subcategory;
 
     public String getName(){
-        this.name = name;
+        return this.name;
     }
 
-    public void setName(){
+    public void setName(String name){
         this.name = name;
     }
 
@@ -51,7 +55,7 @@ public class Product {
         return description;
     }
 
-    public Void setDescription(){
+    public void setDescription(String description){
         this.description = description;
     }
 
@@ -75,15 +79,32 @@ public class Product {
         return active;
     }
 
-    public Void setActive(){
+    public void setActive(Boolean active){
         this.active = active;
     }
 
-    public Category getsubCategory(){
+    public Subcategory getSubcategory(){
         return subcategory;
     }
 
-    public void setSubCategory(SubCategory subcategory){
-        this.subcategory =  subcategory;
+    public void setSubcategory(Subcategory subcategory){
+        this.subcategory = subcategory;
+    }
+
+    public Category getCategory(){
+        return category;
+    }
+
+    public void setCategory(Category category){
+        this.category = category;
+    }
+
+    public LocalDateTime getCreatedAt(){
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt){
+        this.createdAt = createdAt;
     }
 }
+

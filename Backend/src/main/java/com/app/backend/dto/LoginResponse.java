@@ -17,9 +17,9 @@ public class LoginResponse {
     public LoginResponse(String token, User user){
         this.token = token;
         this.id = user.getId();
-        this.username =  user.getUsername();
+        this.username = user.getUsername();
         this.email = user.getEmail();
-        this.role = user.getRole();
+        this.role = user.getRole().toString();
     }
 
     public String getToken(){

@@ -1,17 +1,18 @@
 package com.app.backend.service;
 
 import com.app.backend.dto.UserCreateRequest;
-import com.app.backend.UserUpdateRequest;
+import com.app.backend.dto.UserUpdateRequest;
 import com.app.backend.model.User;
 import com.app.backend.repository.UserRepository;
-import org.springframework.beans.factory.anotation.Autowired;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import java.util.list;
+import java.util.List;
 
 @Service 
-public class UserService{
+public class UserServce{
     @Autowired
     private UserRepository userRepository;
 
@@ -23,7 +24,7 @@ public class UserService{
     }
 
     public User findById(Long id){
-        return userRepository.findById(id).orElseThrow(()-> new RunTimeException("Usuario no encontrado"));
+        return userRepository.findById(id).orElseThrow(()-> new RuntimeException("Usuario no encontrado"));
     }
 
     public User create(UserCreateRequest request){
@@ -42,7 +43,7 @@ public class UserService{
         //Validdar que el coordinador no pueda modificar el admin principal
 
         if(id == 1L && isCoordinador()) {
-            throw new RunTimeException("No tienes permiso para modificar el administrador principal");
+            throw new RuntimeException("No tienes permiso para modificar el administrador principal");
         }
         user.setUsername(request.getUsername());
         user.setEmail(request.getEmail());
@@ -57,7 +58,7 @@ public class UserService{
     }
 
     public Boolean isCoordinador(){
-        Authentication authentication = securityContextHolder.getContext().getAuthentication();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if(authentication != null && authentication.getAuthorities() != null){
             return authentication.getAuthorities().stream().anyMatch(auth -> auth.getAuthority().equals("ROLE_COORDINADOR"));
         }
@@ -70,12 +71,12 @@ public class UserService{
         // validar que no se elimine el usuario admin principal
 
         if(id == 1L){
-            throw new RunTimeException("No se puede eliminar el administrador principal");
+            throw new RuntimeException("No se puede eliminar el administrador principal");
         }
 
         //validar que el usuario exista
-        if(user ==  null){
-            throw new RunTimeException("Usuario no encontrado");
+        if(user == null){
+            throw new RuntimeException("Usuario no encontrado");
         }
 
         userRepository.delete(user);

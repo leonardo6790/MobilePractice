@@ -1,13 +1,13 @@
 package com.app.backend.repository;
 
-import com.app.backend.model.user;
+import com.app.backend.model.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.repository;
-import java.util.optional;
+import org.springframework.stereotype.Repository;
+import java.util.List;
 
 @Repository
-public interface ProductRepository extends JpaRepository<product , Long>{
-    List<Product> findByCategoryId (Long categoryId);
+public interface ProductRepository extends JpaRepository<Product, Long>{
+    List<Product> findByCategoryId(Long categoryId);
 
-    List<Product> findBySubcategoryId (Long subcategoryId);
+    List<Product> findBySubcategoryId(Long subcategoryId);
 }
