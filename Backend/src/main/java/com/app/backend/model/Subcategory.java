@@ -12,6 +12,8 @@ import org.hibernate.annotations.CreationTimestamp;
 @Entity
 @Table(name ="subcategories")
 public class Subcategory {
+        @Transient
+        private Long categoryId;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -35,7 +37,7 @@ public class Subcategory {
 
     @ManyToOne
     @JoinColumn(name="category_id", nullable = false)
-    @JsonBackReference
+    @com.fasterxml.jackson.annotation.JsonProperty(access = com.fasterxml.jackson.annotation.JsonProperty.Access.READ_ONLY)
     private Category category;
 
     public Long getId(){
@@ -72,6 +74,11 @@ public class Subcategory {
 
     public Category getCategory(){
         return category;
+    }
+
+    @com.fasterxml.jackson.annotation.JsonProperty(access = com.fasterxml.jackson.annotation.JsonProperty.Access.READ_ONLY)
+    public Long getCategoryId() {
+        return category != null ? category.getId() : categoryId;
     }
 
     public void setCategory(Category category){

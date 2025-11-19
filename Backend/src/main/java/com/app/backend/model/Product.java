@@ -35,12 +35,12 @@ public class Product {
 
     @ManyToOne
     @JoinColumn(name="category_id", nullable = false)
-    @JsonIgnore
+    @com.fasterxml.jackson.annotation.JsonProperty(access = com.fasterxml.jackson.annotation.JsonProperty.Access.READ_ONLY)
     private Category category;
 
     @ManyToOne
     @JoinColumn(name="subcategory_id", nullable = false)
-    @JsonIgnore
+    @com.fasterxml.jackson.annotation.JsonProperty(access = com.fasterxml.jackson.annotation.JsonProperty.Access.READ_ONLY)
     private Subcategory subcategory;
 
     @Transient

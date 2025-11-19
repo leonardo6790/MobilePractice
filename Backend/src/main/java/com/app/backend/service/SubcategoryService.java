@@ -23,7 +23,7 @@ public class SubcategoryService{
     } 
 
     public List<Subcategory> findByCategoryId(Long categoryId){
-        return subcategoryRepository.findByCategoryId(categoryId);
+        return subcategoryRepository.findByCategory_Id(categoryId);
     } 
 
     public Subcategory findById(Long id){
@@ -47,14 +47,6 @@ public class SubcategoryService{
         return subcategoryRepository.save(subcategory);
     }
 
-    public Subcategory update(Long id, Subcategory subcategoryDetails){
-        Subcategory subcategory = findById(id);
-        subcategory.setName(subcategoryDetails.getName());
-        subcategory.setDescription(subcategoryDetails.getDescription());
-        subcategory.setActive(subcategoryDetails.getActive());
-        subcategory.setCategory(subcategoryDetails.getCategory());
-        return subcategoryRepository.save(subcategory);
-    }
 
     public Subcategory updateWithCategoryId(Long id, String name, String description, Long categoryId, Boolean active){
         Subcategory subcategory = findById(id);
