@@ -287,7 +287,7 @@ Content-Type: application/json
 ### 📋 GET - Obtener todos los productos
 
 **Método:** `GET`  
-**URL:** `{{base_url}}/product`  
+**URL:** `{{base_url}}/products`  
 **Autenticación:** ✅ Requerida (ADMIN o COORDINADOR)
 
 ---
@@ -295,7 +295,7 @@ Content-Type: application/json
 ### 🔍 GET - Obtener productos por categoría
 
 **Método:** `GET`  
-**URL:** `{{base_url}}/product/category/{categoryId}`  
+**URL:** `{{base_url}}/products/category/{categoryId}`  
 **Autenticación:** ✅ Requerida (ADMIN o COORDINADOR)
 
 #### Parámetro de URL:
@@ -306,7 +306,7 @@ Content-Type: application/json
 ### 🔍 GET - Obtener productos por subcategoría
 
 **Método:** `GET`  
-**URL:** `{{base_url}}/product/subcategory/{subcategoryId}`  
+**URL:** `{{base_url}}/products/subcategory/{subcategoryId}`  
 **Autenticación:** ✅ Requerida (ADMIN o COORDINADOR)
 
 #### Parámetro de URL:
@@ -317,7 +317,7 @@ Content-Type: application/json
 ### 🔍 GET - Obtener producto por ID
 
 **Método:** `GET`  
-**URL:** `{{base_url}}/product/{id}`  
+**URL:** `{{base_url}}/products/{id}`  
 **Autenticación:** ✅ Requerida (ADMIN o COORDINADOR)
 
 ---
@@ -325,7 +325,7 @@ Content-Type: application/json
 ### ➕ POST - Crear nuevo producto
 
 **Método:** `POST`  
-**URL:** `{{base_url}}/product`  
+**URL:** `{{base_url}}/products`  
 **Autenticación:** ✅ Requerida (ADMIN o COORDINADOR)
 
 #### Request Body (JSON):
@@ -346,7 +346,7 @@ Content-Type: application/json
 ### ✏️ PUT - Actualizar producto
 
 **Método:** `PUT`  
-**URL:** `{{base_url}}/product/{id}`  
+**URL:** `{{base_url}}/products/{id}`  
 **Autenticación:** ✅ Requerida (ADMIN o COORDINADOR)
 
 #### Request Body (JSON):
@@ -367,7 +367,7 @@ Content-Type: application/json
 ### 🗑️ DELETE - Eliminar producto
 
 **Método:** `DELETE`  
-**URL:** `{{base_url}}/product/{id}`  
+**URL:** `{{base_url}}/products/{id}`  
 **Autenticación:** ✅ Requerida (ADMIN SOLO)
 
 #### Response Esperado (200 OK):
@@ -540,7 +540,7 @@ if (pm.response.code === 200) {
 ### Fase 2: Crear Datos Base (10 minutos)
 - [ ] POST /categories (crear 2-3 categorías)
 - [ ] POST /subcategories (crear 3-4 subcategorías)
-- [ ] POST /product (crear 4-5 productos)
+- [ ] POST /products (crear 4-5 productos)
 - [ ] POST /users (crear 1-2 usuarios nuevos)
 
 ### Fase 3: Consultar Datos (15 minutos)
@@ -548,21 +548,21 @@ if (pm.response.code === 200) {
 - [ ] GET /categories/{id}
 - [ ] GET /subcategories
 - [ ] GET /subcategories/category/{categoryId}
-- [ ] GET /product
-- [ ] GET /product/{id}
-- [ ] GET /product/category/{categoryId}
-- [ ] GET /product/subcategory/{subcategoryId}
+- [ ] GET /products
+- [ ] GET /products/{id}
+- [ ] GET /products/category/{categoryId}
+- [ ] GET /products/subcategory/{subcategoryId}
 - [ ] GET /users
 - [ ] GET /users/{id}
 
 ### Fase 4: Actualizar Datos (10 minutos)
 - [ ] PUT /categories/{id}
 - [ ] PUT /subcategories/{id}
-- [ ] PUT /product/{id}
+- [ ] PUT /products/{id}
 - [ ] PUT /users/{id}
 
 ### Fase 5: Eliminar Datos (5 minutos) - Solo como ADMIN
-- [ ] DELETE /product/{id}
+- [ ] DELETE /products/{id}
 - [ ] DELETE /subcategories/{id}
 - [ ] DELETE /categories/{id}
 - [ ] DELETE /users/{id}

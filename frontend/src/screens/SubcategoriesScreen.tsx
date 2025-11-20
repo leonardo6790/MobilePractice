@@ -261,5 +261,5 @@ export default function CategoriesScreen() {
                    </View>
              </Modal>
         </View>
-    ) 
+    ); 
 }
