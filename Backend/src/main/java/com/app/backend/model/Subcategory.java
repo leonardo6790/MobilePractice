@@ -3,7 +3,8 @@ package com.app.backend.model;
 import jakarta.persistence.*;
 import lombok.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.time.LocalDateTime;
 import org.hibernate.annotations.CreationTimestamp;
@@ -30,12 +31,11 @@ public class Subcategory {
     private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "subcategory", cascade = CascadeType.ALL)
-    @JsonIgnore
+    @JsonManagedReference("subcategory-products")
     private List<Product> products;
 
     @ManyToOne
     @JoinColumn(name="category_id", nullable = false)
-    @JsonBackReference
     private Category category;
 
     public Long getId(){

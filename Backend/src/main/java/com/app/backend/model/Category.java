@@ -3,7 +3,6 @@ package com.app.backend.model;
 import jakarta.persistence.*;
 import lombok.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.util.List;
 import java.time.LocalDateTime;
 import org.hibernate.annotations.CreationTimestamp;
@@ -30,8 +29,8 @@ public class Category {
     private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
-    @JsonManagedReference
-    private List<Subcategory> subCategories;
+    @JsonIgnore
+    private List<Subcategory> subcategories;
 
     public Long getId(){
         return id;
@@ -66,11 +65,11 @@ public class Category {
     }
 
     public List<Subcategory> getSubcategories(){
-        return subCategories;
+        return subcategories;
     }
 
-    public void setSubcategories(List<Subcategory> subCategories){
-        this.subCategories = subCategories;
+    public void setSubcategories(List<Subcategory> subcategories){
+        this.subcategories = subcategories;
     }
 
     public LocalDateTime getCreatedAt(){

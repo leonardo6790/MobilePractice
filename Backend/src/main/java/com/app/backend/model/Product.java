@@ -3,6 +3,7 @@ package com.app.backend.model;
 import jakarta.persistence.*;
 import lombok.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import java.util.List;
 import java.time.LocalDateTime;
 import org.hibernate.annotations.CreationTimestamp;
@@ -21,7 +22,7 @@ public class Product {
     @Column(length = 1000)
     private String description;
     
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private Double price;
 
     private Integer stock;
@@ -35,12 +36,11 @@ public class Product {
 
     @ManyToOne
     @JoinColumn(name="category_id", nullable = false)
-    @JsonIgnore
     private Category category;
 
     @ManyToOne
     @JoinColumn(name="subcategory_id", nullable = false)
-    @JsonIgnore
+    @JsonBackReference("subcategory-products")
     private Subcategory subcategory;
 
     public String getName(){
